@@ -25,6 +25,9 @@ module.exports = {
                 test: /\.vue$/,
                 loader: 'vue-loader',
             },
+            { test: /\.(png|woff|woff2|eot|ttf|svg)$/, 
+                loader: 'url-loader' }
+
         ],
     },
     plugins: [
