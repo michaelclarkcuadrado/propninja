@@ -2,7 +2,7 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" clipped fixed app>
       <v-list>
-        <v-list-tile @click>
+        <v-list-tile @click="false">
           <v-list-tile-action>
             <v-icon>dashboard</v-icon>
           </v-list-tile-action>
@@ -10,7 +10,7 @@
             <v-list-tile-title>Dashboard</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click>
+        <v-list-tile @click="false">
           <v-list-tile-action>
             <v-icon>business</v-icon>
           </v-list-tile-action>
@@ -18,15 +18,15 @@
             <v-list-tile-title>Properties</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click>
+        <v-list-tile @click="false">
           <v-list-tile-action>
             <v-icon>view_week</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Kanban Board</v-list-tile-title>
+            <v-list-tile-title>Timeline Board</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click>
+        <v-list-tile @click="false">
           <v-list-tile-action>
             <v-icon>settings</v-icon>
           </v-list-tile-action>
@@ -36,7 +36,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar app fixed clipped-left dark>
+    <v-toolbar app fixed clipped-left dark color="primary">
       <v-toolbar-side-icon v-on:click="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title style="width: 200px">SPG Properties</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -59,7 +59,7 @@
         <span>Sync Integrations</span>
       </v-tooltip>
       <v-tooltip bottom>
-        <v-btn @click="refreshPropSummaries()" icon slot="activator">
+        <v-btn @click="refreshAllState()" icon slot="activator">
           <v-icon>refresh</v-icon>
         </v-btn>
         <span>Refresh</span>
@@ -81,7 +81,7 @@
           </v-list>
         </v-menu>
       <v-chip @click="changeOrderingDirection()">
-        <v-icon :style="{transform: (isOrderInverted ? 'rotate(180deg) rotateY(180deg)' : '')}">sort</v-icon>
+        <v-icon :style="{transform: (isOrderInverted ? 'rotateX(180deg)' : '')}">sort</v-icon>
         {{(isOrderInverted ? 'Ascending' : 'Descending')}}</v-chip>
       </v-toolbar>
       <v-container grid-list-lg fluid>
@@ -101,6 +101,7 @@
             v-for="(summaryObj, summaryIndex) in propertySummaries"
             v-bind:key="summaryIndex"
             :summaryObj="summaryObj"
+            :propertyStages="propertyStages"
           ></PropertySummaryCard>
         </v-layout>
       </v-container>
@@ -128,7 +129,8 @@ export default {
         {name: "Order by Units"},
         {name: "Order by Value"},
         {name: "Order by Debt"},
-        {name: "Order by Rent Roll"}
+        {name: "Order by Rent Roll"},
+        {name: "Order by Stage"},
       ],
       isOrderInverted: false, // false - order descending, true - order ascending
       drawer: null,
@@ -203,6 +205,26 @@ export default {
       self.lastSeenID = -1;
       self.refreshPropSummaries();
     },
+    getKanbanStages: function(callback){
+      let self = this;
+      axios
+        .get('http://localhost:8888/getKanbanStages')
+        .then(function(response){
+          self.propertyStages = response.data;
+          callback();
+        })
+        .catch(function(){
+          self.propertyStages = [];
+          self.showSnack(
+            "Could not connect to API. Check your connection and try again.",
+            15000,
+            true
+          );
+        });
+    },
+    refreshAllState: function(){
+      this.getKanbanStages(this.refreshPropSummaries);
+    },
     syncIntegrations() {
       this.showSnack(
         "Syncing with Integrations. Just a moment...",
@@ -222,7 +244,7 @@ export default {
     }
   },
   mounted: function() {
-    this.refreshPropSummaries();
+    this.refreshAllState();
   },
   components: {
     PropertySummaryCard
