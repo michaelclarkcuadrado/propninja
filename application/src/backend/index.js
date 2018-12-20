@@ -9,273 +9,232 @@ const port = 8888;
 //serve static assets - built and copied in by docker
 app.use('/static', express.static('static'));
 
+app.get('/', function(req, res){
+  res.redirect('static');
+});
+
 
 //Route definitions
 app.get('/getKanbanStages', function(req, res){
+    //TODO take out. just for development
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.json([
       {
         ID: 0,
-        name: "Under Contract",
-        color: "#FFFFFF"
-      }
+        name: "Listed",
+        color: "#FF00FF"
+      },
+      {
+        ID: 1,
+        name: "Renovating",
+        color: "#435234"
+      },
+      {
+        ID: 2,
+        name: "Leased",
+        color: "#0000FF"
+      },
     ]);
 });
 
 app.get('/getPropertySummaries', function(req, res){
   //TODO take out. just for development
   res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-  console.log("API HIT!")
+  console.log(req.query);
     res.json([
         {
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+              {num: 1, stageID: 1}
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+              {num: 1, stageID: 2},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },{
             title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
             ID: 0,
             currentValue: "10000",
             currentDebt: "8000",
-            numUnits: "6",
             currentRentRoll: "4000",
-          },{
-            title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            numUnits: "6",
-            currentRentRoll: "4000",
-          },{
-            title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            numUnits: "6",
-            currentRentRoll: "4000",
-          },{
-            title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            numUnits: "6",
-            currentRentRoll: "4000",
-          },{
-            title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            numUnits: "6",
-            currentRentRoll: "4000",
-          },{
-            title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            numUnits: "6",
-            currentRentRoll: "4000",
-          },{
-            title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            numUnits: "6",
-            currentRentRoll: "4000",
-          },{
-            title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            numUnits: "6",
-            currentRentRoll: "4000",
-          },{
-            title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            numUnits: "6",
-            currentRentRoll: "4000",
-          },{
-            title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            numUnits: "6",
-            currentRentRoll: "4000",
-          },{
-            title: "221B Baker St. London, England",
-            description: "TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA TESTING DATA ",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            numUnits: "6",
-            currentRentRoll: "4000",
+            units: [
+              {num: 2, stageID: 0},
+            ],
           },
-    ]);
+        ]);
 });
 
 
