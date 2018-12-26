@@ -144,6 +144,7 @@ export default {
       snackbarMsg: "",
       snackbarTimeout: 1,
       snackbarButtonVisible: true,
+      apiHostname: "http://localhost:8888"
     };
   },
   methods: {
@@ -152,7 +153,7 @@ export default {
       self.lastSeenID = -1;
       axios
         .get(
-          "http://localhost:8888/getPropertySummaries?lastSeen=" +
+          self.apiHostname + "/getPropertySummaries?lastSeen=" +
             self.lastSeenID +
             "&ordering=" +
             self.currentMode +
@@ -208,7 +209,7 @@ export default {
     getKanbanStages: function(callback){
       let self = this;
       axios
-        .get('http://localhost:8888/getKanbanStages')
+        .get(self.apiHostname + '/getKanbanStages')
         .then(function(response){
           self.propertyStages = response.data;
           callback();

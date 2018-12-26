@@ -11,20 +11,19 @@
         :key="unitObjIndex"
         row
         wrap
-        align-center
         justify-space-around
       >
-        <v-flex class="xs6">
+        <v-flex class="xs4" style="text-align: center">
           <div
             style="line-height:42px"
             class="subheading text-xs-center"
           >{{Number(unitObj.num).toLocaleString() + " " + (unitObj.num == "1" ? 'Unit' : 'Units')}}</div>
         </v-flex>
-        <v-flex class="xs6">
+        <v-flex class="xs4" style="text-align: center">
           <v-chip
-            :color="propertyStages[unitObj.stageID].color"
-            :text-color="invertColor(propertyStages[unitObj.stageID].color)"
-          >{{propertyStages[unitObj.stageID].name}}</v-chip>
+            :color="'#' + propertyStages[unitObj.stageID].hex_Color"
+            :text-color="invertColor('#'+ propertyStages[unitObj.stageID].hex_Color)"
+          >{{propertyStages[unitObj.stageID].stage_Name}}</v-chip>
         </v-flex>
       </v-layout>
       <v-divider></v-divider>
