@@ -19,3 +19,4 @@ INSERT INTO `spg-propninja`.`property_Classes`
 VALUES
 ("One Unit"), ("Two Unit"), ("Duplex"), ("High-rise");
 
+

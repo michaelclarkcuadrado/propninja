@@ -4,38 +4,50 @@ const app = express();
 const mysql = require('mysql');
 //TODO change for production
 const port = 8888;
+const dbHostname = "database-server";
+const dbUser = "root";
+const dbPassword = "zoopydoopy";
+const dbName = "spg-propninja";
 
+const dbConnectionPool = mysql.createPool({
+  connectionLimit: 5,
+  host: dbHostname,
+  user: dbUser,
+  password: dbPassword,
+  database: dbName,
+  nestTables: '_',
+});
 
-//serve static assets - built and copied in by docker
-app.use('/static', express.static('static'));
-
+//serve static assets - webpack'd and copied in by docker
 app.get('/', function(req, res){
   res.redirect('static');
 });
+app.use('/static', express.static('static'));
+
+
+app.get('/testmysql', function(req,res){
+  dbConnectionPool.query("SELECT * FROM properties", function(error, results, fields){
+    if(error){
+      throw error;
+    }
+    console.log(results);
+    console.log(fields);
+  });
+})
 
 
 //Route definitions
 app.get('/getKanbanStages', function(req, res){
     //TODO take out. just for development
   res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-    res.json([
-      {
-        ID: 0,
-        name: "Listed",
-        color: "#FF00FF"
-      },
-      {
-        ID: 1,
-        name: "Renovating",
-        color: "#435234"
-      },
-      {
-        ID: 2,
-        name: "Leased",
-        color: "#0000FF"
-      },
-    ]);
+    dbConnectionPool.query("SELECT * FROM stages ORDER BY ordering_ID", function(error, results, fields){
+      res.send(results);
+    });
 });
+
+function pullBuildium(){
+  
+}
 
 app.get('/getPropertySummaries', function(req, res){
   //TODO take out. just for development
