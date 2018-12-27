@@ -4,7 +4,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 module.exports = {
-    mode: 'development',
+    mode: (process.env.NODE_ENV === 'production' ? 'production' : 'development'),
     entry: {
         dashboard: './js/dashboard.js',
         index: './js/index.js',

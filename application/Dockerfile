@@ -7,6 +7,7 @@ COPY src/frontend/package*.json ./frontend/
 WORKDIR frontend
 RUN npm install
 COPY src/frontend/ ./
+ENV node_env production
 RUN npx webpack
 
 
@@ -21,6 +22,5 @@ COPY --from=webpack-builder /tmp/frontend/dist/* ./static/
 #copy API files
 COPY src/backend/ ./
 
-#TODO change for production
-EXPOSE 8888
+ENV node_env production
 CMD ["npm", "start"]
