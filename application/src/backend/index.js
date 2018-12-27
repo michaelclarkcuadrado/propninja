@@ -24,229 +24,87 @@ app.get('/', function(req, res){
 });
 app.use('/static', express.static('static'));
 
-
-app.get('/testmysql', function(req,res){
-  dbConnectionPool.query("SELECT * FROM properties", function(error, results, fields){
-    if(error){
-      throw error;
-    }
-    console.log(results);
-    console.log(fields);
-  });
-})
-
-
 //Route definitions
+
+/*
+  Returns a list of all the stages that a unit can possibly be in.
+*/
 app.get('/getKanbanStages', function(req, res){
     //TODO take out. just for development
   res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
     dbConnectionPool.query("SELECT * FROM stages ORDER BY ordering_ID", function(error, results, fields){
-      res.send(results);
+      let stagesObj = {};
+      for(let i = 0; i < results.length; i++){
+        stagesObj[results[i].stage_ID] = results[i];
+      }
+      res.json(stagesObj);
     });
 });
 
-function pullBuildium(){
-  
-}
-
+/*
+  Returns summaryObjs that are consumed by PropertySummaryCards. Bird's eye view of property data
+  possible options are: lastSeen for pagination, ordering, inverted(asc to dsc), and/or a search term sent by GET params
+*/
 app.get('/getPropertySummaries', function(req, res){
   //TODO take out. just for development
   res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
   console.log(req.query);
-    res.json([
-        {
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-              {num: 1, stageID: 1}
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-              {num: 1, stageID: 2},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },{
-            title: "221B Baker St. London, England",
-            ID: 0,
-            currentValue: "10000",
-            currentDebt: "8000",
-            currentRentRoll: "4000",
-            units: [
-              {num: 2, stageID: 0},
-            ],
-          },
-        ]);
+
+  if(Object.keys(req.query).length !== 4){
+    throw new Error("Required parameters not received.");
+  }
+  
+  let sortingModes = [ // this must be kept in sync with 'supported modes' in PropertySummaryView
+    'num_Units',
+    'current_Value',
+    'current_Debt',
+    'currentRentRoll'
+  ];
+  
+  let sqlQuery = 
+  `SELECT prop_ID, 
+         prop_address, 
+         current_Debt, 
+         current_Value, 
+         COUNT(unit_ID) as num_Units, 
+         GROUP_CONCAT(curr_Stage_ID) as unit_Stages,
+         IFNULL(SUM(rent_Roll), 0) as 'currentRentRoll'
+         FROM properties
+         LEFT JOIN prop_Units pU on properties.prop_ID = pU.belongs_To_PropID
+         WHERE prop_address LIKE ?
+         GROUP BY prop_ID
+         ORDER BY ?? ` + (req.query.inverted == '0' ? ' DESC ' : ' ASC ') + `
+         LIMIT 25 OFFSET ?
+         `
+
+  let sqlParams = [
+    '%' + req.query.search + '%',
+    (sortingModes[req.query.ordering]),
+    Number(req.query.lastSeen),
+  ];
+  dbConnectionPool.query(sqlQuery, sqlParams, function (error, results, fields) {
+    if (error) {
+      throw error;
+    }
+    //collate rows into objects with a unified 'units' property. 
+    //Group_concat was necessary to be able to sort entries on database side
+    for (let i = 0; i < results.length; i++) {
+      let unitsObjs = {};
+      if (results[i].unit_Stages !== null) {
+        results[i].unit_Stages.split(',').forEach(function (stageID) {
+          if (stageID in unitsObjs) {
+            unitsObjs[stageID].num++;
+          } else {
+            unitsObjs[stageID] = { num: 1, stageID: stageID }
+          }
+        });
+      }
+      results[i]['units'] = Object.values(unitsObjs)
+      delete results[i].unit_IDs;
+      delete results[i].unit_Stages;
+    }
+    res.json(results);
+  });
 });
 
 

@@ -1,13 +1,10 @@
-USE spg-propninja;
+USE `spg-propninja`;
 
-INSERT INTO `spg-propninja`.`stages`
-(`ordering_ID`,
-`stage_Name`,
-`hex_color`)
-VALUES
-(0, "Renovating", "FF00FF"),
-(1, "Listed", "435234"),
-(2, "Leased", "0000FF");
+INSERT INTO `spg-propninja`.stages (ordering_ID, stage_Name, hex_Color) VALUES (0, 'Renovating', 'FF00FF');
+INSERT INTO `spg-propninja`.stages (ordering_ID, stage_Name, hex_Color) VALUES (1, 'Listed', '435234');
+INSERT INTO `spg-propninja`.stages (ordering_ID, stage_Name, hex_Color) VALUES (2, 'Leased', '0000FF');
+INSERT INTO `spg-propninja`.stages (ordering_ID, stage_Name, hex_Color) VALUES (3, 'Under Contract', 'FF0000');
+INSERT INTO `spg-propninja`.stages (ordering_ID, stage_Name, hex_Color) VALUES (4, 'Settlement', '00FF00');
 
 INSERT INTO `spg-propninja`.`lenders`
 (`lender_Name`)
@@ -19,4 +16,25 @@ INSERT INTO `spg-propninja`.`property_Classes`
 VALUES
 ("One Unit"), ("Two Unit"), ("Duplex"), ("High-rise");
 
+INSERT INTO loan_Types (loan_Type_Name) VALUES
+("Investor"), ("Bridge"), ("Permanent");
 
+INSERT INTO deal_Types (deal_Type_Name) VALUES
+("Flip"), ("Rental");
+
+INSERT INTO `spg-propninja`.properties (prop_ID, prop_address, purchase_Date, purchase_Price, deal_Type_ID, `Owning Entity`, propClass_ID, gross_sqft, year_Built, tax_Assessment, yearly_Tax, yearly_Insurance, refinance_Date, lender_ID, loan_Type_ID, loan_Acct_Number, loan_Payment_Day, monthly_Loan_Payment_Total, monthly_Loan_Payment_Interest, monthly_Loan_Payment_Principal, current_Debt, current_Value, last_Updated_Buildium, last_Updated_QBO) VALUES (1, '221B Baker St. London, England', '2018-12-26', 250000.25, 1, 'SPG Capital.', 2, 50000.00, 1890, 75000.18, 25000.75, 16000.16, '2018-12-26', 3, 1, '3215151', 29, 12345.00, 1600.00, 1520.00, 35131.00, 15552.00, '2018-12-27 00:00:00', '2018-12-27 00:00:00');
+INSERT INTO `spg-propninja`.properties (prop_ID, prop_address, purchase_Date, purchase_Price, deal_Type_ID, `Owning Entity`, propClass_ID, gross_sqft, year_Built, tax_Assessment, yearly_Tax, yearly_Insurance, refinance_Date, lender_ID, loan_Type_ID, loan_Acct_Number, loan_Payment_Day, monthly_Loan_Payment_Total, monthly_Loan_Payment_Interest, monthly_Loan_Payment_Principal, current_Debt, current_Value, last_Updated_Buildium, last_Updated_QBO) VALUES (9, '221B Baker St. London, England', '2018-12-26', 250000.25, 1, 'SPG Capital.', 2, 50000.00, 1890, 75000.18, 25000.75, 16000.16, '2018-12-26', 3, 1, '3215151', 29, 12345.00, 1600.00, 1520.00, 35131.00, 723231.00, '2018-12-27 00:00:00', '2018-12-27 00:00:00');
+INSERT INTO `spg-propninja`.properties (prop_ID, prop_address, purchase_Date, purchase_Price, deal_Type_ID, `Owning Entity`, propClass_ID, gross_sqft, year_Built, tax_Assessment, yearly_Tax, yearly_Insurance, refinance_Date, lender_ID, loan_Type_ID, loan_Acct_Number, loan_Payment_Day, monthly_Loan_Payment_Total, monthly_Loan_Payment_Interest, monthly_Loan_Payment_Principal, current_Debt, current_Value, last_Updated_Buildium, last_Updated_QBO) VALUES (8, '221B Baker St. London, England', '2018-12-26', 250000.25, 1, 'SPG Capital.', 2, 50000.00, 1890, 75000.18, 25000.75, 16000.16, '2018-12-26', 3, 1, '3215151', 29, 12345.00, 1600.00, 1520.00, 35131.00, 610006.00, '2018-12-27 00:00:00', '2018-12-27 00:00:00');
+INSERT INTO `spg-propninja`.properties (prop_ID, prop_address, purchase_Date, purchase_Price, deal_Type_ID, `Owning Entity`, propClass_ID, gross_sqft, year_Built, tax_Assessment, yearly_Tax, yearly_Insurance, refinance_Date, lender_ID, loan_Type_ID, loan_Acct_Number, loan_Payment_Day, monthly_Loan_Payment_Total, monthly_Loan_Payment_Interest, monthly_Loan_Payment_Principal, current_Debt, current_Value, last_Updated_Buildium, last_Updated_QBO) VALUES (7, '221B Baker St. London, England', '2018-12-26', 250000.25, 1, 'SPG Capital.', 2, 50000.00, 1890, 75000.18, 25000.75, 16000.16, '2018-12-26', 3, 1, '3215151', 29, 12345.00, 1600.00, 1520.00, 35131.00, 108932.00, '2018-12-27 00:00:00', '2018-12-27 00:00:00');
+INSERT INTO `spg-propninja`.properties (prop_ID, prop_address, purchase_Date, purchase_Price, deal_Type_ID, `Owning Entity`, propClass_ID, gross_sqft, year_Built, tax_Assessment, yearly_Tax, yearly_Insurance, refinance_Date, lender_ID, loan_Type_ID, loan_Acct_Number, loan_Payment_Day, monthly_Loan_Payment_Total, monthly_Loan_Payment_Interest, monthly_Loan_Payment_Principal, current_Debt, current_Value, last_Updated_Buildium, last_Updated_QBO) VALUES (6, '1600 Pennsylvania Ave, Washington, D.C.', '2018-12-26', 250000.25, 1, 'SPG Capital.', 2, 50000.00, 1890, 75000.18, 25000.75, 16000.16, '2018-12-26', 3, 1, '3215151', 29, 12345.00, 1600.00, 1520.00, 35131.00, 311552.00, '2018-12-27 00:00:00', '2018-12-27 00:00:00');
+INSERT INTO `spg-propninja`.properties (prop_ID, prop_address, purchase_Date, purchase_Price, deal_Type_ID, `Owning Entity`, propClass_ID, gross_sqft, year_Built, tax_Assessment, yearly_Tax, yearly_Insurance, refinance_Date, lender_ID, loan_Type_ID, loan_Acct_Number, loan_Payment_Day, monthly_Loan_Payment_Total, monthly_Loan_Payment_Interest, monthly_Loan_Payment_Principal, current_Debt, current_Value, last_Updated_Buildium, last_Updated_QBO) VALUES (5, '221B Baker St. London, England', '2018-12-26', 250000.25, 1, 'SPG Capital.', 2, 50000.00, 1890, 75000.18, 25000.75, 16000.16, '2018-12-26', 3, 1, '3215151', 29, 12345.00, 1600.00, 1520.00, 35131.00, 816277.00, '2018-12-27 00:00:00', '2018-12-27 00:00:00');
+INSERT INTO `spg-propninja`.properties (prop_ID, prop_address, purchase_Date, purchase_Price, deal_Type_ID, `Owning Entity`, propClass_ID, gross_sqft, year_Built, tax_Assessment, yearly_Tax, yearly_Insurance, refinance_Date, lender_ID, loan_Type_ID, loan_Acct_Number, loan_Payment_Day, monthly_Loan_Payment_Total, monthly_Loan_Payment_Interest, monthly_Loan_Payment_Principal, current_Debt, current_Value, last_Updated_Buildium, last_Updated_QBO) VALUES (4, '221B Baker St. London, England', '2018-12-26', 250000.25, 1, 'SPG Capital.', 2, 50000.00, 1890, 75000.18, 25000.75, 16000.16, '2018-12-26', 3, 1, '3215151', 29, 12345.00, 1600.00, 1520.00, 35131.00, 256610.00, '2018-12-27 00:00:00', '2018-12-27 00:00:00');
+INSERT INTO `spg-propninja`.properties (prop_ID, prop_address, purchase_Date, purchase_Price, deal_Type_ID, `Owning Entity`, propClass_ID, gross_sqft, year_Built, tax_Assessment, yearly_Tax, yearly_Insurance, refinance_Date, lender_ID, loan_Type_ID, loan_Acct_Number, loan_Payment_Day, monthly_Loan_Payment_Total, monthly_Loan_Payment_Interest, monthly_Loan_Payment_Principal, current_Debt, current_Value, last_Updated_Buildium, last_Updated_QBO) VALUES (3, '221B Baker St. London, England', '2018-12-26', 250000.25, 1, 'SPG Capital.', 2, 50000.00, 1890, 75000.18, 25000.75, 16000.16, '2018-12-26', 3, 1, '3215151', 29, 12345.00, 1600.00, 1520.00, 35131.00, 155592.00, '2018-12-27 00:00:00', '2018-12-27 00:00:00');
+INSERT INTO `spg-propninja`.properties (prop_ID, prop_address, purchase_Date, purchase_Price, deal_Type_ID, `Owning Entity`, propClass_ID, gross_sqft, year_Built, tax_Assessment, yearly_Tax, yearly_Insurance, refinance_Date, lender_ID, loan_Type_ID, loan_Acct_Number, loan_Payment_Day, monthly_Loan_Payment_Total, monthly_Loan_Payment_Interest, monthly_Loan_Payment_Principal, current_Debt, current_Value, last_Updated_Buildium, last_Updated_QBO) VALUES (2, '221B Baker St. London, England', '2018-12-26', 250000.25, 1, 'SPG Capital.', 2, 50000.00, 1890, 75000.18, 25000.75, 16000.16, '2018-12-26', 3, 1, '3215151', 29, 12345.00, 1600.00, 1520.00, 35131.00, 840450.00, '2018-12-27 00:00:00', '2018-12-27 00:00:00');
+INSERT INTO `spg-propninja`.properties (prop_ID, prop_address, purchase_Date, purchase_Price, deal_Type_ID, `Owning Entity`, propClass_ID, gross_sqft, year_Built, tax_Assessment, yearly_Tax, yearly_Insurance, refinance_Date, lender_ID, loan_Type_ID, loan_Acct_Number, loan_Payment_Day, monthly_Loan_Payment_Total, monthly_Loan_Payment_Interest, monthly_Loan_Payment_Principal, current_Debt, current_Value, last_Updated_Buildium, last_Updated_QBO) VALUES (10, '300 N. Washington St. Gettysburg, PA', '2018-12-26', 250000.25, 1, 'SPG Capital.', 2, 50000.00, 1890, 75000.18, 25000.75, 16000.16, '2018-12-26', 3, 1, '3215151', 29, 12345.00, 1600.00, 1520.00, 35131.00, 786139.00, '2018-12-27 00:00:00', '2018-12-27 00:00:00');
+
+INSERT INTO `spg-propninja`.prop_Units (unit_ID, unit_sqft, unit_Name, rent_Roll, belongs_To_PropID, curr_Stage_ID) VALUES (1, 500, 'Apt. A', 850.00, 3, 1);
+INSERT INTO `spg-propninja`.prop_Units (unit_ID, unit_sqft, unit_Name, rent_Roll, belongs_To_PropID, curr_Stage_ID) VALUES (2, 600, 'Apt. B', 900.00, 3, 1);
+INSERT INTO `spg-propninja`.prop_Units (unit_ID, unit_sqft, unit_Name, rent_Roll, belongs_To_PropID, curr_Stage_ID) VALUES (3, 700, 'Apt. C', 1200.00, 3, 2);
+INSERT INTO `spg-propninja`.prop_Units (unit_ID, unit_sqft, unit_Name, rent_Roll, belongs_To_PropID, curr_Stage_ID) VALUES (4, 700, 'Apt. C', 1200.00, 4, 2);
+INSERT INTO `spg-propninja`.prop_Units (unit_ID, unit_sqft, unit_Name, rent_Roll, belongs_To_PropID, curr_Stage_ID) VALUES (5, 700, 'Apt. C', 1200.00, 5, 2);

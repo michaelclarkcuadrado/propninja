@@ -3,7 +3,7 @@
     <v-card hover>
       <v-card-title primary-title>
         <div>
-          <h3 class="headline">{{summaryObj.title}}</h3>
+          <h3 class="headline">{{summaryObj.prop_address}}</h3>
         </div>
       </v-card-title>
       <v-layout
@@ -13,17 +13,22 @@
         wrap
         justify-space-around
       >
-        <v-flex class="xs4" style="text-align: center">
+        <v-flex class="xs6" style="text-align: center">
           <div
             style="line-height:42px"
             class="subheading text-xs-center"
           >{{Number(unitObj.num).toLocaleString() + " " + (unitObj.num == "1" ? 'Unit' : 'Units')}}</div>
         </v-flex>
-        <v-flex class="xs4" style="text-align: center">
+        <v-flex class="xs6" style="text-align: center">
           <v-chip
             :color="'#' + propertyStages[unitObj.stageID].hex_Color"
             :text-color="invertColor('#'+ propertyStages[unitObj.stageID].hex_Color)"
           >{{propertyStages[unitObj.stageID].stage_Name}}</v-chip>
+        </v-flex>
+      </v-layout>
+      <v-layout v-if="summaryObj.units.length === 0">
+        <v-flex xs12 style="text-align: center">
+                    <v-icon class="red--text">warning</v-icon><div style="line-height: 42px" class="subheading text-xs-center">No Units</div>
         </v-flex>
       </v-layout>
       <v-divider></v-divider>
@@ -42,7 +47,7 @@
             <v-icon>monetization_on</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>${{Number(summaryObj.currentValue).toLocaleString()}}</v-list-tile-title>
+            <v-list-tile-title>${{Number(summaryObj.current_Value).toLocaleString()}}</v-list-tile-title>
             <v-list-tile-sub-title>Current Value</v-list-tile-sub-title>
           </v-list-tile-content>
         </v-list-tile>
@@ -53,7 +58,7 @@
           <v-list-tile-content>
             <v-list-tile-title
               class="red--text"
-            >-${{Number(summaryObj.currentDebt).toLocaleString()}}</v-list-tile-title>
+            >-${{Number(summaryObj.current_Debt).toLocaleString()}}</v-list-tile-title>
             <v-list-tile-sub-title>Current Debt</v-list-tile-sub-title>
           </v-list-tile-content>
         </v-list-tile>

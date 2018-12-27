@@ -115,7 +115,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `spg-propninja`.`stages` (
   `stage_ID` INT NOT NULL AUTO_INCREMENT,
-  `ordering_ID` INT UNSIGNED NULL,
+  `ordering_ID` INT UNSIGNED NOT NULL,
   `stage_Name` VARCHAR(45) NULL,
   `hex_Color` CHAR(6) NULL,
   PRIMARY KEY (`stage_ID`),
@@ -130,9 +130,9 @@ CREATE TABLE IF NOT EXISTS `spg-propninja`.`prop_Units` (
   `unit_ID` INT NOT NULL AUTO_INCREMENT,
   `unit_sqft` MEDIUMINT(10) UNSIGNED NULL,
   `unit_Name` VARCHAR(255) NULL,
-  `rent_Roll` DECIMAL(19,2) NULL,
-  `belongs_To_PropID` INT NULL,
-  `curr_Stage_ID` INT NULL,
+  `rent_Roll` DECIMAL(19,2) NOT NULL,
+  `belongs_To_PropID` INT NOT NULL,
+  `curr_Stage_ID` INT NOT NULL,
   PRIMARY KEY (`unit_ID`),
   INDEX `fk_prop_Units_1_idx` (`belongs_To_PropID` ASC),
   INDEX `fk_prop_Units_2_idx` (`curr_Stage_ID` ASC),
@@ -154,7 +154,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `spg-propninja`.`checklist_items` (
   `checklist_item_ID` INT NOT NULL AUTO_INCREMENT,
-  `checklist_item_ordering_criteria` INT NULL,
+  `checklist_item_ordering_criteria` INT UNSIGNED NOT NULL,
   `checklist_item_name` VARCHAR(255) NULL,
   `belongsTo_Stage_ID` INT NULL,
   PRIMARY KEY (`checklist_item_ID`),
