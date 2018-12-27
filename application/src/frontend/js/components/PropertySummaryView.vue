@@ -1,41 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" clipped fixed app>
-      <v-list>
-        <v-list-tile @click="false">
-          <v-list-tile-action>
-            <v-icon>dashboard</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Dashboard</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile @click="false">
-          <v-list-tile-action>
-            <v-icon>business</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Properties</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile @click="false">
-          <v-list-tile-action>
-            <v-icon>view_week</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Timeline Board</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile @click="false">
-          <v-list-tile-action>
-            <v-icon>settings</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Settings</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
+    <Sidebar :drawer="drawer"></Sidebar>
     <v-toolbar app fixed clipped-left dark color="primary">
       <v-toolbar-side-icon v-on:click="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title style="width: 200px">SPG Properties</v-toolbar-title>
@@ -48,7 +13,7 @@
         solo-inverted
         v-model="searchTerms"
         prepend-inner-icon="search"
-        label="Search"
+        label="Search Addresses"
         class="hidden-sm-and-down"
       ></v-text-field>
       <v-spacer></v-spacer>
@@ -93,7 +58,7 @@
         box
         v-model="searchTerms"
         prepend-inner-icon="search"
-        label="Search"
+        label="Search Addresses"
         class="hidden-md-and-up"
       ></v-text-field>
         <v-layout row wrap>
@@ -120,6 +85,7 @@
 
 <script>
 import PropertySummaryCard from "./PropertySummaryCard.vue";
+import Sidebar from "./Sidebar.vue";
 const axios = require("axios");
 export default {
   data: function() {
@@ -130,11 +96,10 @@ export default {
         {name: "Order by Value"},
         {name: "Order by Debt"},
         {name: "Order by Rent Roll"},
-        {name: "Order by Stage"},
       ],
       isOrderInverted: false, // false - order descending, true - order ascending
       drawer: null,
-      lastSeenID: -1,
+      totalSeen: 0,
       propertySummaries: [],
       propertyStages:[],
       searchTerms: "",
@@ -150,11 +115,11 @@ export default {
   methods: {
     refreshPropSummaries: function() {
       let self = this;
-      self.lastSeenID = -1;
+      self.totalSeen = 0;
       axios
         .get(
           self.apiHostname + "/getPropertySummaries?lastSeen=" +
-            self.lastSeenID +
+            self.totalSeen +
             "&ordering=" +
             self.currentMode +
             "&inverted=" +
@@ -177,13 +142,13 @@ export default {
     },
     changeOrdering: function(orderingMode){
       if(orderingMode !== this.currentMode){
-          this.lastSeenID = -1;
+          this.totalSeen = 0;
           this.currentMode = orderingMode;
           this.refreshPropSummaries();
       }
     },
     changeOrderingDirection: function(){
-      this.lastSeenID = -1;
+      this.totalSeen = 0;
       this.isOrderInverted = !this.isOrderInverted;
       this.refreshPropSummaries();
     },
@@ -203,7 +168,7 @@ export default {
         }
       }, 450);
       // end debounce logic
-      self.lastSeenID = -1;
+      self.totalSeen = 0;
       self.refreshPropSummaries();
     },
     getKanbanStages: function(callback){
@@ -248,7 +213,8 @@ export default {
     this.refreshAllState();
   },
   components: {
-    PropertySummaryCard
+    PropertySummaryCard,
+    Sidebar
   }
 };
 </script>
