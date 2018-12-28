@@ -1,13 +1,14 @@
 {
   "name": "spg-propninja-frontend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Frontend for the propninja property management application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Michael Clark-Cuadrado",
+  "private": true,
+  "license": "",
   "dependencies": {
     "axios": "^0.18.0",
     "babel-minify-webpack-plugin": "^0.3.1",
