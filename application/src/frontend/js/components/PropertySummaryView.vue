@@ -1,6 +1,41 @@
 <template>
   <v-app>
-    <Sidebar :drawer="drawer"></Sidebar>
+    <v-navigation-drawer v-model="drawer" clipped fixed app>
+      <v-list>
+        <v-list-tile @click="false">
+          <v-list-tile-action>
+            <v-icon>dashboard</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Dashboard</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile @click="false">
+          <v-list-tile-action>
+            <v-icon>business</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Properties</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile @click="false">
+          <v-list-tile-action>
+            <v-icon>view_week</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Pipeline Board</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile @click="false">
+          <v-list-tile-action>
+            <v-icon>settings</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Settings</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
     <v-toolbar app fixed clipped-left dark color="primary">
       <v-toolbar-side-icon v-on:click="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title style="width: 200px">SPG Properties</v-toolbar-title>
@@ -13,7 +48,7 @@
         solo-inverted
         v-model="searchTerms"
         prepend-inner-icon="search"
-        label="Search Addresses"
+        label="Search by Address"
         class="hidden-sm-and-down"
       ></v-text-field>
       <v-spacer></v-spacer>
@@ -58,7 +93,7 @@
         box
         v-model="searchTerms"
         prepend-inner-icon="search"
-        label="Search Addresses"
+        label="Search by Address"
         class="hidden-md-and-up"
       ></v-text-field>
         <v-layout row wrap>
@@ -67,10 +102,16 @@
             v-bind:key="summaryIndex"
             :summaryObj="summaryObj"
             :propertyStages="propertyStages"
+            v-on:open-dialog="openDetailDialog"
           ></PropertySummaryCard>
         </v-layout>
       </v-container>
     </v-content>
+    <property-detail-dialog 
+      :dialog-is-open="isPropertyDetailDialogShowing" 
+      :propertyDetailObj="propDetailObj"
+      v-on:close-dialog="isPropertyDetailDialogShowing = false">
+    </property-detail-dialog>
     <v-snackbar v-model="snackbarShowing" bottom right multi-line :timeout="snackbarTimeout">
       {{snackbarMsg}}
       <v-btn
@@ -85,7 +126,7 @@
 
 <script>
 import PropertySummaryCard from "./PropertySummaryCard.vue";
-import Sidebar from "./Sidebar.vue";
+import PropertyDetailDialog from "./PropertyDetailDialog.vue";
 const axios = require("axios");
 export default {
   data: function() {
@@ -105,6 +146,8 @@ export default {
       searchTerms: "",
       searchDebouncer: false,
       searchWaiting: false,
+      propDetailObj: null,
+      isPropertyDetailDialogShowing: false,
       snackbarShowing: false,
       snackbarMsg: "",
       snackbarTimeout: 1,
@@ -188,6 +231,22 @@ export default {
           );
         });
     },
+    openDetailDialog(propID){
+      let self = this;
+      self.isPropertyDetailDialogShowing = false;
+      // axios.get(self.apiHostname +
+      //           '/getPropertyDetail' +
+      //           '?propID=' + propID
+      // )
+      // .then(function(response){
+      //     self.propDetailObj = response.data;
+          self.isPropertyDetailDialogShowing = true;
+      // })
+      // .catch(function(){
+      //   self.showSnack("Unable to contact API. Check your Connection.", 10000, true)
+      // });
+      
+    },
     refreshAllState: function(){
       this.getKanbanStages(this.refreshPropSummaries);
     },
@@ -214,7 +273,7 @@ export default {
   },
   components: {
     PropertySummaryCard,
-    Sidebar
+    PropertyDetailDialog,
   }
 };
 </script>

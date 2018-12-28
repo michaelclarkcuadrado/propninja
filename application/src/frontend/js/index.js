@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vue'; //TODO use minified version
 import 'vuetify/dist/vuetify.min.css';
 import Vuetify from 'vuetify';
 Vue.use(Vuetify, {

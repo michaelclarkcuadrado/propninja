@@ -1,6 +1,6 @@
 <template>
   <v-flex xs12 s6 md4 lg3 xl3>
-    <v-card hover>
+    <v-card v-on:click="$emit('open-dialog', summaryObj.prop_ID)" hover>
       <v-card-title primary-title>
         <div>
           <h3 class="headline">{{summaryObj.prop_address}}</h3>
