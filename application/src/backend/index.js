@@ -1,6 +1,6 @@
 // express router. Api endpoints defined here.
 const express = require('express');
-const app = express();
+const api = express();
 const mysql = require('mysql');
 const port = 8888;
 const dbHostname = "database-server";
@@ -15,23 +15,31 @@ const dbConnectionPool = mysql.createPool({
   password: dbPassword,
   database: dbName,
   nestTables: '_',
+  multipleStatements: true,
 });
 
-//serve static assets - webpack'd and copied in by docker
-app.get('/', function (req, res) {
+// serve static assets - webpack'd and copied in by docker
+api.get('/', function (req, res) {
   res.redirect('static');
 });
-app.use('/static', express.static('static'));
+api.use('/static', express.static('static'));
+
+// TODO remove for deployment. Set CORS headers for dev environment.
+var setCORS = function(req, res, next){
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+  next();
+};
+api.use(setCORS);
+// END TODO
 
 //Route definitions
 
 /*
-  Returns a list of all the stages that a unit can possibly be in.
+  Returns a list of all the stages available.
 */
-app.get('/getKanbanStages', function (req, res) {
-  //TODO take out. just for development
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-  dbConnectionPool.query("SELECT * FROM stages ORDER BY ordering_ID", function (error, results, fields) {
+api.get('/getKanbanStages', function (req, res) {
+  let sqlQuery = `SELECT stage_ID, ordering_ID, stage_Name, hex_Color FROM stages ORDER BY ordering_ID`;
+  dbConnectionPool.query(sqlQuery, function (error, results, fields) {
     let stagesObj = {};
     for (let i = 0; i < results.length; i++) {
       stagesObj[results[i].stage_ID] = results[i];
@@ -41,14 +49,31 @@ app.get('/getKanbanStages', function (req, res) {
 });
 
 /*
+  Returns names and IDs for the various user-definable properties an object may have.
+  Kanban stages / tasklist not handled here.
+*/
+api.get('/getEnumTypes', function (req,res){
+    let sqlQuery = `
+    SELECT deal_Type_ID, deal_Type_Name FROM deal_Types;
+    SELECT lender_ID, lender_Name FROM lenders;
+    SELECT loan_Type_ID, loan_Type_Name FROM loan_Types;
+    SELECT propClass_ID, propClass_Name FROM property_Classes;
+    SELECT property_Type_ID, property_Type_Name FROM property_Types;
+    SELECT unit_Type_ID, unit_Type_Name FROM unit_Types;
+    `;
+    dbConnectionPool.query(sqlQuery, function(error, results, fields){
+      let labels = [];
+      for(let i = 0; i < results.length; i++){
+        
+      }
+    });
+});
+
+/*
   Returns summaryObjs that are consumed by PropertySummaryCards. Bird's eye view of property data
   possible options are: lastSeen for pagination, ordering, inverted(asc to dsc), and/or a search term sent by GET params
 */
-app.get('/getPropertySummaries', function (req, res) {
-  //TODO take out. just for development
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-  console.log(req.query);
-
+api.get('/getPropertySummaries', function (req, res) {
   if (Object.keys(req.query).length !== 4) {
     throw new Error("Required parameters not received.");
   }
@@ -117,5 +142,24 @@ app.get('/getPropertySummaries', function (req, res) {
   });
 });
 
+
+/*
+  Returns all the information held about a property and its units. For the PropertyDetailDialog.
+  requires a Prop_ID as query.
+*/
+api.get('/getPropertyDetail', function(req, res){
+  let sqlQuery = `
+
+  `;
+  let sqlParams = [];
+  dbConnectionPool.query(sqlQuery, sqlParams, function(error, results, fields){
+    if(error){
+      throw error;
+    }
+
+    
+  });
+});
+
 //start server
-app.listen(port);
+api.listen(port);
