@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS `spg-propninja`.`property_Classes` (
   `propClass_ID` INT NOT NULL AUTO_INCREMENT,
   `propClass_Name` VARCHAR(255) NULL,
   PRIMARY KEY (`propClass_ID`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+COMMENT = 'SFR, 2 unit, 2 unit, multi-family, mixed-use, etc.';
 
 
 -- -----------------------------------------------------
@@ -52,6 +53,17 @@ CREATE TABLE IF NOT EXISTS `spg-propninja`.`deal_Types` (
   `deal_Type_Name` VARCHAR(255) NULL,
   PRIMARY KEY (`deal_Type_ID`))
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `spg-propninja`.`property_Types`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `spg-propninja`.`property_Types` (
+  `property_Type_ID` INT NOT NULL AUTO_INCREMENT,
+  `property_Type_Name` VARCHAR(255) NULL,
+  PRIMARY KEY (`property_Type_ID`))
+ENGINE = InnoDB
+COMMENT = 'None, detached, semi-detached';
 
 
 -- -----------------------------------------------------
@@ -82,11 +94,13 @@ CREATE TABLE IF NOT EXISTS `spg-propninja`.`properties` (
   `current_Value` DECIMAL(19,2) UNSIGNED NULL,
   `last_Updated_Buildium` DATETIME NULL,
   `last_Updated_QBO` DATETIME NULL,
+  `property_Type_ID` INT NULL,
   PRIMARY KEY (`prop_ID`),
   INDEX `fk_properties_2_idx` (`propClass_ID` ASC),
   INDEX `fk_properties_1_idx` (`lender_ID` ASC),
   INDEX `fk_properties_3_idx` (`loan_Type_ID` ASC),
   INDEX `fk_properties_4_idx` (`deal_Type_ID` ASC),
+  INDEX `fk_properties_6_idx` (`property_Type_ID` ASC),
   CONSTRAINT `fk_properties_1`
     FOREIGN KEY (`lender_ID`)
     REFERENCES `spg-propninja`.`lenders` (`lender_ID`)
@@ -106,7 +120,12 @@ CREATE TABLE IF NOT EXISTS `spg-propninja`.`properties` (
     FOREIGN KEY (`deal_Type_ID`)
     REFERENCES `spg-propninja`.`deal_Types` (`deal_Type_ID`)
     ON DELETE RESTRICT
-    ON UPDATE CASCADE)
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_properties_6`
+    FOREIGN KEY (`property_Type_ID`)
+    REFERENCES `spg-propninja`.`property_Types` (`property_Type_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -124,6 +143,16 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `spg-propninja`.`unit_Types`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `spg-propninja`.`unit_Types` (
+  `unit_Type_ID` INT NOT NULL AUTO_INCREMENT,
+  `unit_Type_Name` VARCHAR(255) NULL,
+  PRIMARY KEY (`unit_Type_ID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `spg-propninja`.`prop_Units`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `spg-propninja`.`prop_Units` (
@@ -133,9 +162,11 @@ CREATE TABLE IF NOT EXISTS `spg-propninja`.`prop_Units` (
   `rent_Roll` DECIMAL(19,2) NOT NULL,
   `belongs_To_PropID` INT NOT NULL,
   `curr_Stage_ID` INT NOT NULL,
+  `unit_Type_ID` INT NULL,
   PRIMARY KEY (`unit_ID`),
   INDEX `fk_prop_Units_1_idx` (`belongs_To_PropID` ASC),
   INDEX `fk_prop_Units_2_idx` (`curr_Stage_ID` ASC),
+  INDEX `fk_prop_Units_3_idx` (`unit_Type_ID` ASC),
   CONSTRAINT `fk_prop_Units_1`
     FOREIGN KEY (`belongs_To_PropID`)
     REFERENCES `spg-propninja`.`properties` (`prop_ID`)
@@ -145,7 +176,12 @@ CREATE TABLE IF NOT EXISTS `spg-propninja`.`prop_Units` (
     FOREIGN KEY (`curr_Stage_ID`)
     REFERENCES `spg-propninja`.`stages` (`stage_ID`)
     ON DELETE RESTRICT
-    ON UPDATE CASCADE)
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_prop_Units_3`
+    FOREIGN KEY (`unit_Type_ID`)
+    REFERENCES `spg-propninja`.`unit_Types` (`unit_Type_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
