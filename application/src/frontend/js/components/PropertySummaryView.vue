@@ -101,7 +101,7 @@
             v-for="(summaryObj, summaryIndex) in propertySummaries"
             v-bind:key="summaryIndex"
             :summaryObj="summaryObj"
-            :propertyStages="propertyStages"
+            :propertyStages="enumTypes['property_stages']"
             v-on:open-dialog="openDetailDialog"
           ></PropertySummaryCard>
         </v-layout>
@@ -142,7 +142,7 @@ export default {
       drawer: null,
       totalSeen: 0,
       propertySummaries: [],
-      propertyStages:[],
+      enumTypes:[],
       searchTerms: "",
       searchDebouncer: false,
       searchWaiting: false,
@@ -214,16 +214,16 @@ export default {
       self.totalSeen = 0;
       self.refreshPropSummaries();
     },
-    getKanbanStages: function(callback){
+    getEnumTypes: function(callback){
       let self = this;
       axios
-        .get(self.apiHostname + '/getKanbanStages')
+        .get(self.apiHostname + '/getEnumTypes')
         .then(function(response){
-          self.propertyStages = response.data;
+          self.enumTypes = response.data;
           callback();
         })
         .catch(function(){
-          self.propertyStages = [];
+          self.enumTypes = [];
           self.showSnack(
             "Could not connect to API. Check your connection and try again.",
             15000,
@@ -234,21 +234,21 @@ export default {
     openDetailDialog(propID){
       let self = this;
       self.isPropertyDetailDialogShowing = false;
-      // axios.get(self.apiHostname +
-      //           '/getPropertyDetail' +
-      //           '?propID=' + propID
-      // )
-      // .then(function(response){
-      //     self.propDetailObj = response.data;
+      axios.get(self.apiHostname +
+                '/getPropertyDetail' +
+                '?propID=' + propID
+      )
+      .then(function(response){
+          self.propDetailObj = response.data;
           self.isPropertyDetailDialogShowing = true;
-      // })
-      // .catch(function(){
-      //   self.showSnack("Unable to contact API. Check your Connection.", 10000, true)
-      // });
+      })
+      .catch(function(){
+        self.showSnack("Unable to contact API. Check your Connection.", 10000, true)
+      });
       
     },
     refreshAllState: function(){
-      this.getKanbanStages(this.refreshPropSummaries);
+      this.getEnumTypes(this.refreshPropSummaries);
     },
     syncIntegrations() {
       this.showSnack(

@@ -6,7 +6,7 @@
                 <v-btn icon @click.native="$emit('close-dialog')" dark>
                     <v-icon>close</v-icon>
                 </v-btn>
-                <v-toolbar-title>Detail: Property Address</v-toolbar-title>
+                <v-toolbar-title>Detail: {{propertyDetailObj.prop_address}}</v-toolbar-title>
             </v-toolbar>
             
         </v-card>
