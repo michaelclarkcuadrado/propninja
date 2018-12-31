@@ -9,7 +9,7 @@ module.exports = {
         dashboard: './js/dashboard.js',
         index: './js/index.js',
         kanban: './js/kanban.js',
-        newProperty: './js/newProperty.js'
+        settings: './js/settings.js'
     },
     output: {
         filename: '[name].dist.js',
