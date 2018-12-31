@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `spg-propninja`.`properties` (
   `purchase_Date` DATE NULL,
   `purchase_Price` DECIMAL(19,2) NULL,
   `deal_Type_ID` INT NULL,
-  `Owning Entity` VARCHAR(255) NULL,
+  `owning_Entity` VARCHAR(255) NULL,
   `propClass_ID` INT NULL,
   `gross_sqft` DECIMAL(10,2) NULL,
   `year_Built` SMALLINT(6) UNSIGNED NULL,
