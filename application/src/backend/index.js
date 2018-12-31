@@ -25,7 +25,7 @@ api.get('/', function (req, res) {
 api.use('/static', express.static('static'));
 
 // TODO remove for deployment. Set CORS headers for dev environment.
-var setCORS = function(req, res, next){
+var setCORS = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
   next();
 };
@@ -35,38 +35,39 @@ api.use(setCORS);
 //Route definitions
 
 /*
-  Returns a list of all the stages available.
-*/
-api.get('/getKanbanStages', function (req, res) {
-  let sqlQuery = `SELECT stage_ID, ordering_ID, stage_Name, hex_Color FROM stages ORDER BY ordering_ID`;
-  dbConnectionPool.query(sqlQuery, function (error, results, fields) {
-    let stagesObj = {};
-    for (let i = 0; i < results.length; i++) {
-      stagesObj[results[i].stage_ID] = results[i];
-    }
-    res.json(stagesObj);
-  });
-});
-
-/*
   Returns names and IDs for the various user-definable properties an object may have.
-  Kanban stages / tasklist not handled here.
 */
-api.get('/getEnumTypes', function (req,res){
-    let sqlQuery = `
-    SELECT deal_Type_ID, deal_Type_Name FROM deal_Types;
-    SELECT lender_ID, lender_Name FROM lenders;
-    SELECT loan_Type_ID, loan_Type_Name FROM loan_Types;
-    SELECT propClass_ID, propClass_Name FROM property_Classes;
-    SELECT property_Type_ID, property_Type_Name FROM property_Types;
-    SELECT unit_Type_ID, unit_Type_Name FROM unit_Types;
+api.get('/getEnumTypes', function (req, res) {
+  let sqlQuery = `
+    SELECT stage_ID as ID, ordering_ID, stage_Name, hex_Color FROM stages ORDER BY ordering_ID;
+    SELECT deal_Type_ID as ID, deal_Type_Name FROM deal_Types;
+    SELECT lender_ID as ID, lender_Name FROM lenders;
+    SELECT loan_Type_ID as ID, loan_Type_Name FROM loan_Types;
+    SELECT propClass_ID as ID, propClass_Name FROM property_Classes;
+    SELECT property_Type_ID as ID, property_Type_Name FROM property_Types;
+    SELECT unit_Type_ID as ID, unit_Type_Name FROM unit_Types;
     `;
-    dbConnectionPool.query(sqlQuery, function(error, results, fields){
-      let labels = [];
-      for(let i = 0; i < results.length; i++){
-        
-      }
-    });
+  dbConnectionPool.query(sqlQuery, function (error, results, fields) {
+    let labels = [
+      'property_stages',
+      'deal_types',
+      'lenders',
+      'loan_types',
+      'prop_classes',
+      'prop_types',
+      'unit_types',
+    ];
+    let resultObj = {};
+    //create objects where the ID is key for fast lookups
+    for (let i = 0; i < results.length; i++) {
+        let tempObj = {};
+        for (let j = 0; j < results[i].length; j++) {
+          tempObj[results[i][j].ID] = results[i][j];
+        }
+        resultObj[labels[i]] = tempObj;
+    }
+    res.json(resultObj);
+  });
 });
 
 /*
@@ -116,7 +117,7 @@ api.get('/getPropertySummaries', function (req, res) {
         throw error;
       }
       let stageMap = {};
-      for(row in stageResults){
+      for (row in stageResults) {
         stageMap[stageResults[row].stage_ID] = stageResults[row].ordering_ID;
       }
       //collate rows into objects with a unified 'units' property. 
@@ -133,7 +134,7 @@ api.get('/getPropertySummaries', function (req, res) {
           });
         }
         propertyResults[i]['units'] = Object.values(unitsObjs);
-        propertyResults[i]['units'].sort((a,b) => stageMap[a.stageID] - stageMap[b.stageID]);
+        propertyResults[i]['units'].sort((a, b) => stageMap[a.stageID] - stageMap[b.stageID]);
         delete propertyResults[i].unit_IDs;
         delete propertyResults[i].unit_Stages;
       }
@@ -147,17 +148,68 @@ api.get('/getPropertySummaries', function (req, res) {
   Returns all the information held about a property and its units. For the PropertyDetailDialog.
   requires a Prop_ID as query.
 */
-api.get('/getPropertyDetail', function(req, res){
+api.get('/getPropertyDetail', function (req, res) {
   let sqlQuery = `
-
+  SELECT prop_ID,
+  prop_address,
+  purchase_Date,
+  purchase_Price,
+  deal_Type_ID,
+  owning_Entity,
+  propClass_ID,
+  gross_sqft,
+  year_Built,
+  tax_Assessment,
+  yearly_Tax,
+  yearly_Insurance,
+  refinance_Date,
+  lender_ID,
+  loan_Type_ID,
+  loan_Acct_Number,
+  loan_Payment_Day,
+  monthly_Loan_Payment_Total,
+  monthly_Loan_Payment_Interest,
+  monthly_Loan_Payment_Principal,
+  current_Debt,
+  current_Value,
+  last_Updated_Buildium,
+  last_Updated_QBO,
+  property_Type_ID,
+  GROUP_CONCAT(unit_ID ORDER BY unit_ID SEPARATOR '!####!') AS unit_ID,
+  GROUP_CONCAT(unit_sqft ORDER BY unit_ID SEPARATOR '!####!') AS unit_sqft,
+  GROUP_CONCAT(unit_Name ORDER BY unit_ID SEPARATOR '!####!') AS unit_Name,
+  GROUP_CONCAT(rent_Roll ORDER BY unit_ID SEPARATOR '!####!') AS rent_Roll,
+  GROUP_CONCAT(curr_Stage_ID ORDER BY unit_ID SEPARATOR '!####!') AS curr_Stage_ID,
+  GROUP_CONCAT(unit_Type_ID ORDER BY unit_ID SEPARATOR '!####!') AS unit_Type_ID
+from properties
+  LEFT JOIN prop_Units pU on properties.prop_ID = pU.belongs_To_PropID
+  WHERE prop_ID = ?
+GROUP by prop_ID
   `;
-  let sqlParams = [];
-  dbConnectionPool.query(sqlQuery, sqlParams, function(error, results, fields){
-    if(error){
+  let sqlParams = [req.query.propID];
+  dbConnectionPool.query(sqlQuery, sqlParams, function (error, results, fields) {
+    if (error) {
       throw error;
     }
-
-    
+    //split concat'd unit details and pivot into individual objects
+    let unitDetailNames = ['unit_ID', 'unit_sqft', 'unit_Name', 'rent_Roll', 'curr_Stage_ID', 'unit_Type_ID'];
+      results = results[0]; // only a single row is returned.
+      let unitDetailsObj = {};
+      for(let i = 0; i < unitDetailNames.length; i++){
+        unitDetailsObj[unitDetailNames[i]] = results[unitDetailNames[i]].split("!####!");
+        delete(results[unitDetailNames[i]]);
+      }
+      let numUnits = unitDetailsObj[Object.keys(unitDetailsObj)[0]].length;
+      let units = [];
+      for(let i = 0; i < numUnits; i++){
+        let unit = {};
+        for(let j = 0; j < unitDetailNames.length; j++){
+          unit[unitDetailNames[j]] = unitDetailsObj[unitDetailNames[j]][i];
+        }
+        units.push(unit);
+      }
+      results['units'] = units;
+    res.json(results);
   });
 });
 
