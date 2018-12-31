@@ -20,7 +20,7 @@
           >{{Number(unitObj.num).toLocaleString() + " " + (unitObj.num == "1" ? 'Unit' : 'Units')}}</div>
         </v-flex>
         <v-flex class="xs6" style="text-align: center">
-          <v-chip
+          <v-chip disabled
             :color="'#' + propertyStages[unitObj.stageID].hex_Color"
             :text-color="invertColor('#'+ propertyStages[unitObj.stageID].hex_Color)"
           >{{propertyStages[unitObj.stageID].stage_Name}}</v-chip>
