@@ -180,7 +180,8 @@ api.get('/getPropertyDetail', function (req, res) {
   GROUP_CONCAT(unit_Name ORDER BY unit_ID SEPARATOR '!####!') AS unit_Name,
   GROUP_CONCAT(rent_Roll ORDER BY unit_ID SEPARATOR '!####!') AS rent_Roll,
   GROUP_CONCAT(curr_Stage_ID ORDER BY unit_ID SEPARATOR '!####!') AS curr_Stage_ID,
-  GROUP_CONCAT(unit_Type_ID ORDER BY unit_ID SEPARATOR '!####!') AS unit_Type_ID
+  GROUP_CONCAT(unit_Type_ID ORDER BY unit_ID SEPARATOR '!####!') AS unit_Type_ID,
+  GROUP_CONCAT(0 SEPARATOR '!####!') as is_Being_Edited
 from properties
   LEFT JOIN prop_Units pU on properties.prop_ID = pU.belongs_To_PropID
   WHERE prop_ID = ?
@@ -192,7 +193,7 @@ GROUP by prop_ID
       throw error;
     }
     //split concat'd unit details and pivot into individual objects
-    let unitDetailNames = ['unit_ID', 'unit_sqft', 'unit_Name', 'rent_Roll', 'curr_Stage_ID', 'unit_Type_ID'];
+    let unitDetailNames = ['unit_ID', 'unit_sqft', 'unit_Name', 'rent_Roll', 'curr_Stage_ID', 'unit_Type_ID', 'is_Being_Edited'];
       results = results[0]; // only a single row is returned.
       let unitDetailsObj = {};
       for(let i = 0; i < unitDetailNames.length; i++){
