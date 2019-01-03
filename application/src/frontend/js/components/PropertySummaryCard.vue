@@ -3,7 +3,7 @@
     <v-card v-on:click="$emit('open-dialog', summaryObj.prop_ID)" hover>
       <v-card-title primary-title>
         <div>
-          <h3 class="headline">{{summaryObj.prop_address}}</h3>
+          <h3 class="headline">{{summaryObj.prop_address}} <span class="grey--text subheading">#{{summaryObj.prop_ID}}</span></h3>
         </div>
       </v-card-title>
       <v-layout

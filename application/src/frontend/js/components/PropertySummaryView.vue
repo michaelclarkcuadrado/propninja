@@ -103,15 +103,28 @@
             :summaryObj="summaryObj"
             :propertyStages="enumTypes['property_stages']"
             v-on:open-dialog="openDetailDialog"
-          ></PropertySummaryCard>
+          >
+          </PropertySummaryCard>
+           <v-btn
+              fixed
+              dark
+              fab
+              bottom
+              right
+              color="secondary"
+            >
+              <v-icon>add</v-icon>
+            </v-btn>
         </v-layout>
       </v-container>
     </v-content>
     <property-detail-dialog 
       :dialog-is-open="isPropertyDetailDialogShowing" 
       :propertyDetailObj="propDetailObj"
+      :enumTypes="enumTypes"
       v-on:close-dialog="isPropertyDetailDialogShowing = false">
     </property-detail-dialog>
+
     <v-snackbar v-model="snackbarShowing" bottom right multi-line :timeout="snackbarTimeout">
       {{snackbarMsg}}
       <v-btn
